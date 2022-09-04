@@ -2,6 +2,9 @@
   "name": "marindeck-scripts",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "minify": "terser scripts/keepTweetedHashtags.js --output scripts/keepTweetedHashtags.min.js"
+  },
   "devDependencies": {
     "eslint": "8.23.0",
     "eslint-config-standard": "17.0.0",
