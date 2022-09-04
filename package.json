@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "minify": "terser scripts/keepTweetedHashtags.js --output scripts/keepTweetedHashtags.min.js"
+    "minify": "terser --format quote_style=1 scripts/keepTweetedHashtags.js --output scripts/keepTweetedHashtags.min.js"
   },
   "devDependencies": {
     "eslint": "8.23.0",
