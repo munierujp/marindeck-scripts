@@ -1,6 +1,5 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>munierujp/renovate-config"
+    "github>munierujp/renovate-config"
   ]
 }
