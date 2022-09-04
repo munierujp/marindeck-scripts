@@ -29,6 +29,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   'use strict'
 
   /**
+   * @param {number} timeout
+   * @returns {Promise<void>}
+   */
+  const sleep = async (timeout) => {
+    return await new Promise((resolve) => {
+      setTimeout(resolve, timeout)
+    })
+  }
+
+  /**
    * @param {string} text
    * @returns {string[]}
    */
@@ -183,5 +193,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     })
   }
 
-  main()
+  // NOTE: すぐに実行するとうまくいかないので1秒待っている
+  // TODO: イベントやMutationObserverを使ってもっといい感じに書きたい
+  sleep(1000).then(() => {
+    main()
+  })
 })()
