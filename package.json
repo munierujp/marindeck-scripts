@@ -6,6 +6,7 @@
     "minify": "terser --format quote_style=1 scripts/keepTweetedHashtags.js --output scripts/keepTweetedHashtags.min.js"
   },
   "devDependencies": {
+    "@types/node": "18.7.14",
     "eslint": "8.23.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
