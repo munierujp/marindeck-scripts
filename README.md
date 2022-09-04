@@ -1,6 +1,6 @@
 # marindeck-scripts
 
-MarinDeckのスクリプト
+MarinDeckのカスタムJavaScript用スクリプト
 
 ## 使い方
 
