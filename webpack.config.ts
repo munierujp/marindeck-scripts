@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import TerserPlugin from 'terser-webpack-plugin'
 import type { Configuration } from 'webpack'
 
