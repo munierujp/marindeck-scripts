@@ -1,8 +1,10 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "types": [
-      "node"
+    "lib": [
+      // see https://www.npmjs.com/package/@tsconfig/node16
+      "ES2021",
+      "dom"
     ]
   }
 }
