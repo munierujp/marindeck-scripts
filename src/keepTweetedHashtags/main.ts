@@ -6,9 +6,9 @@ import { sleep } from './sleep'
   const SELECTOR_COMPOSER = 'textarea.js-compose-text'
 
   const main = async (): Promise<void> => {
-    // NOTE: すぐに実行するとうまくいかないので1秒待っている
+    // NOTE: すぐに実行するとうまくいかないので2秒待っている
     // TODO: イベントやMutationObserverを使ってもっといい感じに書きたい
-    await sleep(1000)
+    await sleep(2000)
 
     let hashtags: string[] = []
 
