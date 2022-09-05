@@ -8,6 +8,9 @@
     "lint": "eslint '**/*.{js,ts}'",
     "prebuild": "npm run clean"
   },
+  "engines": {
+    "node": "16.11.1"
+  },
   "devDependencies": {
     "@tsconfig/node16": "1.0.3",
     "@types/node": "16.11.57",
