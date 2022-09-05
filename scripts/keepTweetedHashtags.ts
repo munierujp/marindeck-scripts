@@ -1,5 +1,3 @@
-// @ts-check
-
 /*
 The MIT License (MIT)
 
@@ -29,39 +27,28 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 (function () {
   'use strict'
 
-  /**
-   * @param {number} timeout
-   * @returns {Promise<void>}
-   */
-  const sleep = async (timeout) => {
+  const sleep = async (timeout: number): Promise<void> => {
     return await new Promise((resolve) => {
       setTimeout(resolve, timeout)
     })
   }
 
-  /**
-   * @param {string} text
-   * @returns {string[]}
-   */
-  const extractHashtags = (text) => {
+  const extractHashtags = (text: string): string[] => {
     // @ts-expect-error
     const hashtags = window.twttrTxt.extractHashtags(text)
     return hashtags
   }
 
-  /**
-   * @param {(visible: boolean) => void} callback
-   * @returns {() => void}
-   */
-  const onComposerShown = (callback) => {
+  const onComposerShown = (callback: (visible: boolean) => void): () => void => {
     const drawer = document.querySelector('.app-content')
-    /** @type {boolean | undefined} */
-    let visible
 
-    /**
-     * @param {MutationRecord[]} mutations
-     */
-    const onChange = (mutations) => {
+    if (drawer === null) {
+      throw new Error('Not found drawer (`.app-content`)')
+    }
+
+    let visible: boolean | undefined
+
+    const onChange = (mutations: MutationRecord[]): void => {
       if (mutations.length > 0) {
         const hasRemovedComposer = mutations.some(({ removedNodes }) =>
           Array.from(removedNodes).some((node) => node instanceof HTMLElement && node.querySelector('textarea.js-compose-text') !== null)
@@ -85,7 +72,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
       }
 
-      const composers = drawer?.querySelectorAll('textarea.js-compose-text') || []
+      const composers = drawer?.querySelectorAll<HTMLTextAreaElement>('textarea.js-compose-text') ?? []
       const hasComposer = composers.length === 1
 
       if (!hasComposer) {
@@ -106,7 +93,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       visible = true
     }
     const observer = new MutationObserver(onChange)
-    // @ts-ignore
     observer.observe(drawer, {
       childList: true,
       subtree: true
@@ -117,13 +103,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     }
   }
 
-  /**
-   * @param {(disabled: boolean) => void} callback
-   */
-  const onComposerDisabledStateChange = (callback) => {
+  const onComposerDisabledStateChange = (callback: (disabled: boolean) => void): void => {
     const observer = new MutationObserver(() => {
-      /** @type {HTMLTextAreaElement | null} */
-      const composer = document.querySelector('.drawer[data-drawer="compose"] textarea.js-compose-text')
+      const composer = document.querySelector<HTMLTextAreaElement>('.drawer[data-drawer="compose"] textarea.js-compose-text')
       const disabled = composer?.disabled ?? false
       callback(disabled)
     })
@@ -134,7 +116,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         return
       }
 
-      const composer = document.querySelector('.drawer[data-drawer="compose"] textarea.js-compose-text')
+      const composer = document.querySelector<HTMLTextAreaElement>('.drawer[data-drawer="compose"] textarea.js-compose-text')
 
       if (composer === null) {
         return
@@ -147,9 +129,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     })
   }
 
-  const main = () => {
-    /** @type {string[]} */
-    let hashtags = []
+  const main = async (): Promise<void> => {
+    // NOTE: すぐに実行するとうまくいかないので1秒待っている
+    // TODO: イベントやMutationObserverを使ってもっといい感じに書きたい
+    await sleep(1000)
+
+    let hashtags: string[] = []
 
     // Save hashtags when typing.
     document.body.addEventListener('keyup', ({ target }) => {
@@ -161,13 +146,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       hashtags = extractedHashtags
     }, true)
 
-    const pasteHashtags = () => {
+    const pasteHashtags = (): void => {
       if (hashtags.length === 0) {
         return
       }
 
-      /** @type {HTMLTextAreaElement | null} */
-      const textarea = document.querySelector('textarea.js-compose-text')
+      const textarea = document.querySelector<HTMLTextAreaElement>('textarea.js-compose-text')
 
       if (textarea === null) {
         return
@@ -194,9 +178,5 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     })
   }
 
-  // NOTE: すぐに実行するとうまくいかないので1秒待っている
-  // TODO: イベントやMutationObserverを使ってもっといい感じに書きたい
-  sleep(1000).then(() => {
-    main()
-  })
+  main().catch(error => console.error(error))
 })()
