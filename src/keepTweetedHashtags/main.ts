@@ -1,5 +1,3 @@
-/** @see https://github.com/eramdam/BetterTweetDeck/blob/main/src/features/keepTweetedHashtags.ts */
-
 import { extractHashtags } from './extractHashtags'
 import { onComposerDisabledStateChange } from './onComposerDisabledStateChange'
 import { onComposerShown } from './onComposerShown'
