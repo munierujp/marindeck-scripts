@@ -25,15 +25,17 @@ const config: Configuration = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin({
-      terserOptions: {
-        format: {
-          preamble: '/* see https://github.com/munierujp/marindeck-scripts */',
-          // always single
-          quote_style: 1
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            preamble: '/* see https://github.com/munierujp/marindeck-scripts */',
+            // always single
+            quote_style: 1
+          }
         }
-      }
-    })]
+      })
+    ]
   }
 }
 
