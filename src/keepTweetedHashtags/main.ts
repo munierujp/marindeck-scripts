@@ -1,4 +1,3 @@
-import { extractHashtags } from './extractHashtags'
 import { onComposerDisabledStateChange } from './onComposerDisabledStateChange'
 import { onComposerShown } from './onComposerShown'
 import { sleep } from './sleep'
@@ -21,8 +20,7 @@ import { sleep } from './sleep'
           return
         }
 
-        const extractedHashtags = extractHashtags(target.value)
-        hashtags = extractedHashtags
+        hashtags = window.twttrTxt.extractHashtags(target.value)
       },
       true
     )
