@@ -4,6 +4,8 @@ import { extractHashtags } from './extractHashtags'
 import { sleep } from './sleep'
 
 (function () {
+  const SELECTOR_COMPOSER = 'textarea.js-compose-text'
+
   const onComposerShown = (callback: (visible: boolean) => void): () => void => {
     const drawer = document.querySelector('.app-content')
 
@@ -15,19 +17,18 @@ import { sleep } from './sleep'
 
     const onChange = (mutations: MutationRecord[]): void => {
       if (mutations.length > 0) {
-        const hasRemovedComposer = mutations.some(({ removedNodes }) =>
-          Array.from(removedNodes).some((node) => node instanceof HTMLElement && node.querySelector('textarea.js-compose-text') !== null)
-        )
-        const hasAddedComposer = mutations.some(({ addedNodes }) =>
-          Array.from(addedNodes).some((node) => node instanceof HTMLElement && node.querySelector('textarea.js-compose-text') !== null)
-        )
+        const added = mutations.some(({ addedNodes }) => {
+          return Array.from(addedNodes).some((node) => node instanceof HTMLElement && node.querySelector(SELECTOR_COMPOSER) !== null)
+        })
+        const removed = mutations.some(({ removedNodes }) => {
+          return Array.from(removedNodes).some((node) => node instanceof HTMLElement && node.querySelector(SELECTOR_COMPOSER) !== null)
+        })
 
         // If we're here, it means the composer got removed and added in a single operation, so we need to do something a big different..
-        if (hasRemovedComposer && hasAddedComposer) {
+        if (removed && added) {
           // eslint-disable-next-line n/no-callback-literal
           callback(false)
           visible = false
-
           requestAnimationFrame(() => {
             // eslint-disable-next-line n/no-callback-literal
             callback(true)
@@ -37,10 +38,9 @@ import { sleep } from './sleep'
         }
       }
 
-      const composers = drawer?.querySelectorAll<HTMLTextAreaElement>('textarea.js-compose-text') ?? []
-      const hasComposer = composers.length === 1
+      const composers = drawer?.querySelectorAll<HTMLTextAreaElement>(SELECTOR_COMPOSER) ?? []
 
-      if (!hasComposer) {
+      if (composers.length !== 1) {
         if (visible === true || visible === undefined) {
           // eslint-disable-next-line n/no-callback-literal
           callback(false)
@@ -57,6 +57,7 @@ import { sleep } from './sleep'
 
       visible = true
     }
+
     const observer = new MutationObserver(onChange)
     observer.observe(drawer, {
       childList: true,
@@ -70,18 +71,17 @@ import { sleep } from './sleep'
 
   const onComposerDisabledStateChange = (callback: (disabled: boolean) => void): void => {
     const observer = new MutationObserver(() => {
-      const composer = document.querySelector<HTMLTextAreaElement>('.drawer[data-drawer="compose"] textarea.js-compose-text')
+      const composer = document.querySelector<HTMLTextAreaElement>(`.drawer[data-drawer="compose"] ${SELECTOR_COMPOSER}`)
       const disabled = composer?.disabled ?? false
       callback(disabled)
     })
-
     onComposerShown((visible) => {
       if (!visible) {
         observer.disconnect()
         return
       }
 
-      const composer = document.querySelector<HTMLTextAreaElement>('.drawer[data-drawer="compose"] textarea.js-compose-text')
+      const composer = document.querySelector<HTMLTextAreaElement>(`.drawer[data-drawer="compose"] ${SELECTOR_COMPOSER}`)
 
       if (composer === null) {
         return
@@ -102,21 +102,25 @@ import { sleep } from './sleep'
     let hashtags: string[] = []
 
     // Save hashtags when typing.
-    document.body.addEventListener('keyup', ({ target }) => {
-      if (target === null || !(target instanceof HTMLTextAreaElement) || !target.matches('textarea.js-compose-text')) {
-        return
-      }
+    document.body.addEventListener(
+      'keyup',
+      ({ target }) => {
+        if (!(target instanceof HTMLTextAreaElement) || !target.matches(SELECTOR_COMPOSER)) {
+          return
+        }
 
-      const extractedHashtags = extractHashtags(target.value)
-      hashtags = extractedHashtags
-    }, true)
+        const extractedHashtags = extractHashtags(target.value)
+        hashtags = extractedHashtags
+      },
+      true
+    )
 
     const pasteHashtags = (): void => {
       if (hashtags.length === 0) {
         return
       }
 
-      const textarea = document.querySelector<HTMLTextAreaElement>('textarea.js-compose-text')
+      const textarea = document.querySelector<HTMLTextAreaElement>(SELECTOR_COMPOSER)
 
       if (textarea === null) {
         return
