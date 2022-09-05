@@ -1,12 +1,8 @@
+import { sleep } from './sleep'
+
 /** @see https://github.com/eramdam/BetterTweetDeck/blob/main/src/features/keepTweetedHashtags.ts */
 
 (function () {
-  const sleep = async (timeout: number): Promise<void> => {
-    return await new Promise((resolve) => {
-      setTimeout(resolve, timeout)
-    })
-  }
-
   const extractHashtags = (text: string): string[] => {
     // @ts-expect-error
     const hashtags = window.twttrTxt.extractHashtags(text)
