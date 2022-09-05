@@ -1,6 +1,6 @@
+import sleep from 'sleep-promise'
 import { onComposerDisabledStateChange } from './onComposerDisabledStateChange'
 import { onComposerShown } from './onComposerShown'
-import { sleep } from './sleep'
 
 (function () {
   const SELECTOR_COMPOSER = 'textarea.js-compose-text'
