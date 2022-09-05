@@ -17,6 +17,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-n": "15.2.5",
     "eslint-plugin-promise": "6.0.1",
+    "eslint-plugin-tsdoc": "0.2.16",
     "terser": "5.15.0",
     "terser-webpack-plugin": "5.3.6",
     "ts-loader": "9.3.1",
