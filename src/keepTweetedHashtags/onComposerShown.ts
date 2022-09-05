@@ -1,5 +1,9 @@
 const SELECTOR_COMPOSER = 'textarea.js-compose-text'
 
+const hasComposer = (node: Node): boolean => {
+  return node instanceof HTMLElement && node.querySelector(SELECTOR_COMPOSER) !== null
+}
+
 export const onComposerShown = (callback: (visible: boolean) => void): () => void => {
   const drawer = document.querySelector('.app-content')
 
@@ -11,23 +15,21 @@ export const onComposerShown = (callback: (visible: boolean) => void): () => voi
 
   const onChange = (mutations: MutationRecord[]): void => {
     if (mutations.length > 0) {
-      const added = mutations.some(({ addedNodes }) => {
-        return Array.from(addedNodes).some((node) => node instanceof HTMLElement && node.querySelector(SELECTOR_COMPOSER) !== null)
-      })
-      const removed = mutations.some(({ removedNodes }) => {
-        return Array.from(removedNodes).some((node) => node instanceof HTMLElement && node.querySelector(SELECTOR_COMPOSER) !== null)
-      })
+      const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)))
+      const hasRemovedComposer = mutations.some(({ removedNodes }) => Array.from(removedNodes).some((node) => hasComposer(node)))
 
       // If we're here, it means the composer got removed and added in a single operation, so we need to do something a big different..
-      if (removed && added) {
+      if (hasRemovedComposer && hasAddedComposer) {
         // eslint-disable-next-line n/no-callback-literal
         callback(false)
         visible = false
+
         requestAnimationFrame(() => {
           // eslint-disable-next-line n/no-callback-literal
           callback(true)
           visible = true
         })
+
         return
       }
     }

@@ -1,10 +1,12 @@
 import { onComposerShown } from './onComposerShown'
 
-const SELECTOR_COMPOSER = '.drawer[data-drawer="compose"] textarea.js-compose-text'
+const getComposerElement = (): HTMLTextAreaElement | undefined => {
+  return document.querySelector<HTMLTextAreaElement>('.drawer[data-drawer="compose"] textarea.js-compose-text') ?? undefined
+}
 
 export const onComposerDisabledStateChange = (callback: (disabled: boolean) => void): void => {
   const observer = new MutationObserver(() => {
-    const composer = document.querySelector<HTMLTextAreaElement>(SELECTOR_COMPOSER)
+    const composer = getComposerElement()
     const disabled = composer?.disabled ?? false
     callback(disabled)
   })
@@ -15,9 +17,9 @@ export const onComposerDisabledStateChange = (callback: (disabled: boolean) => v
       return
     }
 
-    const composer = document.querySelector<HTMLTextAreaElement>(SELECTOR_COMPOSER)
+    const composer = getComposerElement()
 
-    if (composer === null) {
+    if (composer === undefined) {
       return
     }
 

@@ -61,5 +61,5 @@ import { sleep } from './sleep'
     })
   }
 
-  main().catch(error => console.error(error))
+  main().catch((error: unknown) => console.error(error))
 })()
