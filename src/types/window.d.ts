@@ -1,5 +1,9 @@
-interface Window {
-  twttrTxt: {
-    extractHashtags: (text: string) => string[]
+import type { extractHashtags } from 'twitter-text'
+
+declare global {
+  interface Window {
+    twttrTxt: {
+      extractHashtags: typeof extractHashtags
+    }
   }
 }
