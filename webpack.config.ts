@@ -5,7 +5,7 @@ import type { Configuration } from 'webpack'
 const config: Configuration = {
   target: 'web',
   entry: {
-    keepTweetedHashtags: './src/keepTweetedHashtags.ts'
+    keepTweetedHashtags: './src/keepTweetedHashtags/index.ts'
   },
   output: {
     path: path.join(__dirname, './dist'),

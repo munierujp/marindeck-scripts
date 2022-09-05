@@ -128,9 +128,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   }
 
   const main = async (): Promise<void> => {
-    // NOTE: すぐに実行するとうまくいかないので1秒待っている
+    // NOTE: すぐに実行するとうまくいかないので5秒待っている
     // TODO: イベントやMutationObserverを使ってもっといい感じに書きたい
-    await sleep(1000)
+    await sleep(5000)
 
     let hashtags: string[] = []
 
