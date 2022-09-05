@@ -25,8 +25,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /** @see https://github.com/eramdam/BetterTweetDeck/blob/main/src/features/keepTweetedHashtags.ts */
 
 (function () {
-  'use strict'
-
   const sleep = async (timeout: number): Promise<void> => {
     return await new Promise((resolve) => {
       setTimeout(resolve, timeout)
