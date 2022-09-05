@@ -13,6 +13,8 @@ const unicornRules = {
   'unicorn/prefer-query-selector': 'off',
   // Array.from() を使うのは理にかなっているので無効化
   'unicorn/prefer-spread': 'off',
+  // TODO [engine:node@>=18]: Node.js v18以上になったら有効化
+  'unicorn/prefer-top-level-await': 'off',
   // 一般的に定着しているような略語を省略せずに書くのは冗長なので無効化
   'unicorn/prevent-abbreviations': 'off'
 }
