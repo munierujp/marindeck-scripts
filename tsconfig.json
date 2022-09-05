@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": [
       // see https://www.npmjs.com/package/@tsconfig/node16
-      "ES2021",
+      "es2021",
       "dom"
     ]
   }
