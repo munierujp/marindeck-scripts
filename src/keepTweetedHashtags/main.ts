@@ -1,36 +1,12 @@
 /** @see https://github.com/eramdam/BetterTweetDeck/blob/main/src/features/keepTweetedHashtags.ts */
 
 import { extractHashtags } from './extractHashtags'
+import { onComposerDisabledStateChange } from './onComposerDisabledStateChange'
 import { onComposerShown } from './onComposerShown'
 import { sleep } from './sleep'
 
 (function () {
   const SELECTOR_COMPOSER = 'textarea.js-compose-text'
-
-  const onComposerDisabledStateChange = (callback: (disabled: boolean) => void): void => {
-    const observer = new MutationObserver(() => {
-      const composer = document.querySelector<HTMLTextAreaElement>(`.drawer[data-drawer="compose"] ${SELECTOR_COMPOSER}`)
-      const disabled = composer?.disabled ?? false
-      callback(disabled)
-    })
-    onComposerShown((visible) => {
-      if (!visible) {
-        observer.disconnect()
-        return
-      }
-
-      const composer = document.querySelector<HTMLTextAreaElement>(`.drawer[data-drawer="compose"] ${SELECTOR_COMPOSER}`)
-
-      if (composer === null) {
-        return
-      }
-
-      observer.observe(composer, {
-        attributes: true,
-        attributeFilter: ['disabled']
-      })
-    })
-  }
 
   const main = async (): Promise<void> => {
     // NOTE: すぐに実行するとうまくいかないので5秒待っている
