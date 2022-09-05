@@ -9,4 +9,4 @@ MarinDeckのカスタムJavaScript用スクリプト
 
 ## スクリプト
 
-- [ハッシュタグを保持](https://github.com/munierujp/marindeck-scripts/raw/master/scripts/keepTweetedHashtags.min.js)
+- [ハッシュタグを保持](https://github.com/munierujp/marindeck-scripts/raw/master/dist/keepTweetedHashtags.js)
