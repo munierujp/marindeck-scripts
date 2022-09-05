@@ -1,14 +1,9 @@
-import { sleep } from './sleep'
-
 /** @see https://github.com/eramdam/BetterTweetDeck/blob/main/src/features/keepTweetedHashtags.ts */
 
-(function () {
-  const extractHashtags = (text: string): string[] => {
-    // @ts-expect-error
-    const hashtags = window.twttrTxt.extractHashtags(text)
-    return hashtags
-  }
+import { extractHashtags } from './extractHashtags'
+import { sleep } from './sleep'
 
+(function () {
   const onComposerShown = (callback: (visible: boolean) => void): () => void => {
     const drawer = document.querySelector('.app-content')
 
