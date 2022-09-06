@@ -1,15 +1,11 @@
-import sleep from 'sleep-promise'
 import { onComposerDisabledStateChange } from './onComposerDisabledStateChange'
 import { onComposerShown } from './onComposerShown'
+import { onReady } from './onReady'
 
 (function () {
   const SELECTOR_COMPOSER = 'textarea.js-compose-text'
 
   const main = async (): Promise<void> => {
-    // NOTE: すぐに実行するとうまくいかないので2秒待っている
-    // TODO: イベントやMutationObserverを使ってもっといい感じに書きたい
-    await sleep(2000)
-
     let hashtags: string[] = []
 
     // Save hashtags when typing.
@@ -57,5 +53,7 @@ import { onComposerShown } from './onComposerShown'
     })
   }
 
-  main().catch((error: unknown) => console.error(error))
+  onReady()
+    .then(main)
+    .catch((error: unknown) => console.error(error))
 })()
