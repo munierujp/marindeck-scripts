@@ -1,8 +1,4 @@
-const SELECTOR_COMPOSER = 'textarea.js-compose-text'
-
-const hasComposer = (node: Node): boolean => {
-  return node instanceof HTMLElement && node.querySelector(SELECTOR_COMPOSER) !== null
-}
+import { hasComposer } from './hasComposer'
 
 export const onComposerShown = (callback: (visible: boolean) => void): () => void => {
   const drawer = document.querySelector('.app-content')
@@ -34,7 +30,7 @@ export const onComposerShown = (callback: (visible: boolean) => void): () => voi
       }
     }
 
-    const composers = drawer?.querySelectorAll<HTMLTextAreaElement>(SELECTOR_COMPOSER) ?? []
+    const composers = drawer?.querySelectorAll<HTMLTextAreaElement>('textarea.js-compose-text') ?? []
 
     if (composers.length !== 1) {
       if (visible === true || visible === undefined) {
