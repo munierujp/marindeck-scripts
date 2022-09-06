@@ -1,6 +1,6 @@
 import { onComposerDisabledStateChange } from './onComposerDisabledStateChange'
 import { onComposerShown } from './onComposerShown'
-import { waitLoading } from './waitLoading'
+import { onReady } from './onReady'
 
 (function () {
   const SELECTOR_COMPOSER = 'textarea.js-compose-text'
@@ -53,7 +53,7 @@ import { waitLoading } from './waitLoading'
     })
   }
 
-  waitLoading()
+  onReady()
     .then(main)
     .catch((error: unknown) => console.error(error))
 })()
