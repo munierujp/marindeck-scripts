@@ -6,6 +6,7 @@ export const onReady = async (): Promise<void> => {
       const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)))
 
       if (hasAddedComposer) {
+        observer.disconnect()
         resolve()
       }
     })
