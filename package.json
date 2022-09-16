@@ -6,6 +6,7 @@
     "build": "webpack --mode=production",
     "clean": "rimraf dist",
     "lint": "eslint '**/*.{js,ts}'",
+    "rollup": "rollup --config rollup.config.ts --configPlugin typescript",
     "prebuild": "npm run clean"
   },
   "engines": {
