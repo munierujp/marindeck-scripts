@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
     "clean": "rimraf dist",
     "lint": "eslint '**/*.{js,ts}'",
-    "rollup": "rollup --config rollup.config.ts --configPlugin typescript",
     "prebuild": "npm run clean"
   },
   "engines": {
