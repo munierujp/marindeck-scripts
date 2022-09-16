@@ -1,2 +1,141 @@
-/* see https://github.com/munierujp/marindeck-scripts */
-(()=>{'use strict';var e={467:(e,o)=>{Object.defineProperty(o,'__esModule',{value:!0}),o.hasComposer=void 0;o.hasComposer=e=>e instanceof HTMLElement&&null!==e.querySelector('textarea.js-compose-text')},737:(e,o,t)=>{Object.defineProperty(o,'__esModule',{value:!0}),o.onComposerDisabledStateChange=void 0;const r=t(652),n=()=>document.querySelector('.drawer[data-drawer="compose"] textarea.js-compose-text')??void 0;o.onComposerDisabledStateChange=e=>{const o=new MutationObserver((()=>{const o=n();e(o?.disabled??!1)}));(0,r.onComposerShown)((e=>{if(!e)return void o.disconnect();const t=n();void 0!==t&&o.observe(t,{attributes:!0,attributeFilter:['disabled']})}))}},652:(e,o,t)=>{Object.defineProperty(o,'__esModule',{value:!0}),o.onComposerShown=void 0;const r=t(467);o.onComposerShown=e=>{const o=document.querySelector('.app-content');if(null===o)throw new Error('Not found content.');let t;const n=()=>{if(0===o.querySelectorAll('textarea.js-compose-text').length)return!0!==t&&void 0!==t||e(!1),void(t=!1);!1!==t&&void 0!==t||e(!0),t=!0},s=new MutationObserver((o=>{if(0===o.length)return void n();const s=o.some((({addedNodes:e})=>Array.from(e).some((e=>(0,r.hasComposer)(e)))));if(o.some((({removedNodes:e})=>Array.from(e).some((e=>(0,r.hasComposer)(e)))))&&s)return e(!1),t=!1,void requestAnimationFrame((()=>{e(!0),t=!0}));n()}));return s.observe(o,{childList:!0,subtree:!0}),n(),()=>{s.disconnect()}}},319:(e,o,t)=>{Object.defineProperty(o,'__esModule',{value:!0}),o.onReady=void 0;const r=t(467);o.onReady=async()=>await new Promise((e=>{const o=new MutationObserver((t=>{t.some((({addedNodes:e})=>Array.from(e).some((e=>(0,r.hasComposer)(e)))))&&(o.disconnect(),e())}));o.observe(document.body,{childList:!0,subtree:!0})}))}},o={};function t(r){var n=o[r];if(void 0!==n)return n.exports;var s=o[r]={exports:{}};return e[r](s,s.exports,t),s.exports}(()=>{const e=t(737),o=t(652),r=t(319);!function(){const t='textarea.js-compose-text';(0,r.onReady)().then((async()=>{let r=[];document.body.addEventListener('keyup',(({target:e})=>{e instanceof HTMLTextAreaElement&&e.matches(t)&&(r=window.twttrTxt.extractHashtags(e.value))}),!0);const n=()=>{if(0===r.length)return;const e=document.querySelector(t);null!==e&&(e.value=` ${r.map((e=>`#${e}`)).join(' ')}`,e.selectionStart=0,e.selectionEnd=0,e.dispatchEvent(new Event('change')))};(0,e.onComposerDisabledStateChange)((e=>{e||n()})),(0,o.onComposerShown)((e=>{e&&n()}))})).catch((e=>console.error(e)))}()})()})();
+/* see https://github.com/munierujp/marindeck-scripts/tree/master/src/keepTweetedHashtags */
+(function () {
+    'use strict';
+
+    const hasComposer = (node) => {
+        return node instanceof HTMLElement && node.querySelector('textarea.js-compose-text') !== null;
+    };
+
+    const onComposerShown = (callback) => {
+        /* eslint-disable n/no-callback-literal */
+        const content = document.querySelector('.app-content');
+        if (content === null) {
+            throw new Error('Not found content.');
+        }
+        let visible;
+        const updateVisible = () => {
+            const composers = content.querySelectorAll('textarea.js-compose-text');
+            if (composers.length === 0) {
+                if (visible === true || visible === undefined) {
+                    callback(false);
+                }
+                visible = false;
+                return;
+            }
+            if (visible === false || visible === undefined) {
+                callback(true);
+            }
+            visible = true;
+        };
+        const observer = new MutationObserver((mutations) => {
+            if (mutations.length === 0) {
+                updateVisible();
+                return;
+            }
+            const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
+            const hasRemovedComposer = mutations.some(({ removedNodes }) => Array.from(removedNodes).some((node) => hasComposer(node)));
+            // If we're here, it means the composer got removed and added in a single operation, so we need to do something a big different..
+            if (hasRemovedComposer && hasAddedComposer) {
+                callback(false);
+                visible = false;
+                requestAnimationFrame(() => {
+                    callback(true);
+                    visible = true;
+                });
+                return;
+            }
+            updateVisible();
+        });
+        observer.observe(content, {
+            childList: true,
+            subtree: true
+        });
+        updateVisible();
+        return () => {
+            observer.disconnect();
+        };
+        /* eslint-enable n/no-callback-literal */
+    };
+
+    const getComposerElement = () => {
+        return document.querySelector('.drawer[data-drawer="compose"] textarea.js-compose-text') ?? undefined;
+    };
+    const onComposerDisabledStateChange = (callback) => {
+        const observer = new MutationObserver(() => {
+            const composer = getComposerElement();
+            const disabled = composer?.disabled ?? false;
+            callback(disabled);
+        });
+        onComposerShown((visible) => {
+            if (!visible) {
+                observer.disconnect();
+                return;
+            }
+            const composer = getComposerElement();
+            if (composer === undefined) {
+                return;
+            }
+            observer.observe(composer, {
+                attributes: true,
+                attributeFilter: ['disabled']
+            });
+        });
+    };
+
+    const onReady = async () => {
+        return await new Promise((resolve) => {
+            const observer = new MutationObserver((mutations) => {
+                const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
+                if (hasAddedComposer) {
+                    observer.disconnect();
+                    resolve();
+                }
+            });
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    };
+
+    const SELECTOR_COMPOSER = 'textarea.js-compose-text';
+    const main = async () => {
+        let hashtags = [];
+        // Save hashtags when typing.
+        document.body.addEventListener('keyup', ({ target }) => {
+            if (!(target instanceof HTMLTextAreaElement) || !target.matches(SELECTOR_COMPOSER)) {
+                return;
+            }
+            hashtags = window.twttrTxt.extractHashtags(target.value);
+        }, true);
+        const pasteHashtags = () => {
+            if (hashtags.length === 0) {
+                return;
+            }
+            const textarea = document.querySelector(SELECTOR_COMPOSER);
+            if (textarea === null) {
+                return;
+            }
+            textarea.value = ` ${hashtags.map((tag) => `#${tag}`).join(' ')}`;
+            textarea.selectionStart = 0;
+            textarea.selectionEnd = 0;
+            textarea.dispatchEvent(new Event('change'));
+        };
+        // Re-instate hashtags when the composer is enabled again.
+        onComposerDisabledStateChange((disabled) => {
+            if (!disabled) {
+                pasteHashtags();
+            }
+        });
+        // Re-add hashtags when the composer is back.
+        onComposerShown((visible) => {
+            if (visible) {
+                pasteHashtags();
+            }
+        });
+    };
+    onReady()
+        .then(main)
+        .catch((error) => console.error(error));
+
+})();
