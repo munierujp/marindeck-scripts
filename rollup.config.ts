@@ -1,22 +1,27 @@
+import { readFileSync } from 'node:fs'
 import typescript from '@rollup/plugin-typescript'
+import { sync as globSync } from 'glob'
 import type { RollupOptions } from 'rollup'
 
-const createOptions = (id: string): RollupOptions => {
-  return {
-    input: `src/${id}/main.ts`,
-    output: {
-      file: `dist/${id}.js`,
-      format: 'iife',
-      banner: `/* see https://github.com/munierujp/marindeck-scripts/tree/master/src/${id} */`
-    },
-    plugins: [
-      typescript()
-    ]
+const readFile = (path: string): string | undefined => {
+  try {
+    return readFileSync(path, 'utf8')
+  } catch {
+    return undefined
   }
 }
 
-const config: RollupOptions[] = [
-  createOptions('keepTweetedHashtags')
-]
+const files = globSync('src/**/main.ts')
+const config: RollupOptions[] = files.map(file => ({
+  input: file,
+  output: {
+    file: file.replace(/^src\//, 'dist/').replace(/\/main\.ts$/, '.js'),
+    format: 'iife',
+    banner: readFile(file.replace(/\/main\.ts$/, '/header.txt'))
+  },
+  plugins: [
+    typescript()
+  ]
+}))
 
 export default config
