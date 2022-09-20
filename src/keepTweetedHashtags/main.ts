@@ -4,7 +4,7 @@ import { onReady } from './onReady'
 
 const SELECTOR_COMPOSER = 'textarea.js-compose-text'
 
-const main = async (): Promise<void> => {
+const main = (): void => {
   let hashtags: string[] = []
 
   // Save hashtags when typing.

@@ -99,7 +99,7 @@
     };
 
     const SELECTOR_COMPOSER = 'textarea.js-compose-text';
-    const main = async () => {
+    const main = () => {
         let hashtags = [];
         // Save hashtags when typing.
         document.body.addEventListener('keyup', ({ target }) => {
