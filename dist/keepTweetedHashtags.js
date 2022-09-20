@@ -84,7 +84,7 @@
 
     const onReady = async () => {
         return await new Promise((resolve) => {
-            const observer = new MutationObserver((mutations) => {
+            const observer = new MutationObserver((mutations, observer) => {
                 const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
                 if (hasAddedComposer) {
                     observer.disconnect();
