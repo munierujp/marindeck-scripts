@@ -2,6 +2,10 @@
 (function () {
     'use strict';
 
+    const handleError = (error) => {
+        throw error;
+    };
+
     const hasComposer = (node) => {
         return node instanceof HTMLElement && node.querySelector('textarea.js-compose-text') !== null;
     };
@@ -82,24 +86,8 @@
         });
     };
 
-    const onReady = async () => {
-        return await new Promise((resolve) => {
-            const observer = new MutationObserver((mutations, observer) => {
-                const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
-                if (hasAddedComposer) {
-                    observer.disconnect();
-                    resolve();
-                }
-            });
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
-    };
-
     const SELECTOR_COMPOSER = 'textarea.js-compose-text';
-    const main = async () => {
+    const handleReady = () => {
         let hashtags = [];
         // Save hashtags when typing.
         document.body.addEventListener('keyup', ({ target }) => {
@@ -134,8 +122,25 @@
             }
         });
     };
+
+    const onReady = async () => {
+        return await new Promise((resolve) => {
+            const observer = new MutationObserver((mutations, observer) => {
+                const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
+                if (hasAddedComposer) {
+                    observer.disconnect();
+                    resolve();
+                }
+            });
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    };
+
     onReady()
-        .then(main)
-        .catch((error) => console.error(error));
+        .then(handleReady)
+        .catch(handleError);
 
 })();
