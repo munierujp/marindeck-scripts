@@ -2,26 +2,21 @@ import { readFileSync } from 'node:fs'
 import typescript from '@rollup/plugin-typescript'
 import { sync as globSync } from 'glob'
 import type { RollupOptions } from 'rollup'
+import watch from 'rollup-plugin-watch'
 
-const readFile = (path: string): string | undefined => {
-  try {
-    return readFileSync(path, 'utf8')
-  } catch {
-    return undefined
-  }
-}
-
-const files = globSync('src/**/main.ts')
-const config: RollupOptions[] = files.map(file => ({
-  input: file,
+const configs: RollupOptions[] = globSync('src/**/main.ts').map(entryPath => ({
+  input: entryPath,
   output: {
-    file: file.replace(/^src\//, 'dist/').replace(/\/main\.ts$/, '.js'),
+    file: entryPath.replace(/^src\//, 'dist/').replace(/\/(.+)\/main\.ts$/, '/$1.js'),
     format: 'iife',
-    banner: readFile(file.replace(/\/main\.ts$/, '/header.txt'))
+    banner: () => readFileSync(entryPath.replace(/\/main\.ts$/, '/header.txt'), 'utf8')
   },
   plugins: [
-    typescript()
+    typescript(),
+    watch({
+      dir: 'src'
+    })
   ]
 }))
 
-export default config
+export default configs
