@@ -2,6 +2,10 @@
 (function () {
     'use strict';
 
+    const handleError = (error) => {
+        throw error;
+    };
+
     const hasComposer = (node) => {
         return node instanceof HTMLElement && node.querySelector('textarea.js-compose-text') !== null;
     };
@@ -137,6 +141,6 @@
 
     onReady()
         .then(handleReady)
-        .catch((error) => console.error(error));
+        .catch(handleError);
 
 })();
