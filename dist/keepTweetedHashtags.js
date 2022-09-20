@@ -82,24 +82,8 @@
         });
     };
 
-    const onReady = async () => {
-        return await new Promise((resolve) => {
-            const observer = new MutationObserver((mutations, observer) => {
-                const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
-                if (hasAddedComposer) {
-                    observer.disconnect();
-                    resolve();
-                }
-            });
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
-    };
-
     const SELECTOR_COMPOSER = 'textarea.js-compose-text';
-    const main = () => {
+    const handleReady = () => {
         let hashtags = [];
         // Save hashtags when typing.
         document.body.addEventListener('keyup', ({ target }) => {
@@ -134,8 +118,25 @@
             }
         });
     };
+
+    const onReady = async () => {
+        return await new Promise((resolve) => {
+            const observer = new MutationObserver((mutations, observer) => {
+                const hasAddedComposer = mutations.some(({ addedNodes }) => Array.from(addedNodes).some((node) => hasComposer(node)));
+                if (hasAddedComposer) {
+                    observer.disconnect();
+                    resolve();
+                }
+            });
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    };
+
     onReady()
-        .then(main)
+        .then(handleReady)
         .catch((error) => console.error(error));
 
 })();
