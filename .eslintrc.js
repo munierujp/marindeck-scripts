@@ -4,8 +4,5 @@ module.exports = {
   ],
   parserOptions: {
     project: './tsconfig.json'
-  },
-  env: {
-    browser: true
   }
 }
