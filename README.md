@@ -1,3 +1,6 @@
+[![build](https://github.com/munierujp/marindeck-scripts/actions/workflows/build.yml/badge.svg)](https://github.com/munierujp/marindeck-scripts/actions/workflows/build.yml)
+[![lint](https://github.com/munierujp/marindeck-scripts/actions/workflows/lint.yml/badge.svg)](https://github.com/munierujp/marindeck-scripts/actions/workflows/lint.yml)
+
 # marindeck-scripts
 
 MarinDeckのカスタムJavaScript用スクリプト
