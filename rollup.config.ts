@@ -1,7 +1,6 @@
 import typescript from '@rollup/plugin-typescript'
 import glob from 'glob'
 import type { RollupOptions } from 'rollup'
-import watch from 'rollup-plugin-watch'
 
 const configs: RollupOptions[] = glob.sync('src/**/main.ts').map(entryPath => ({
   input: entryPath,
@@ -10,10 +9,7 @@ const configs: RollupOptions[] = glob.sync('src/**/main.ts').map(entryPath => ({
     format: 'iife'
   },
   plugins: [
-    typescript(),
-    watch({
-      dir: 'src'
-    })
+    typescript()
   ]
 }))
 
