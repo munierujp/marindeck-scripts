@@ -9,7 +9,8 @@ MarinDeckのカスタムJavaScript用スクリプト
 
 1. 各スクリプトの中身をコピー
 2. MarinDeckのカスタムJavaScriptの入力欄にペースト
+3. MarinDeckの画面をリロード
 
 ## スクリプト
 
-- [ハッシュタグを保持](./src/keepTweetedHashtags)
+- [ハッシュタグを保持](./dist/keepTweetedHashtags.js)
