@@ -1,4 +1,3 @@
-/* see https://github.com/munierujp/marindeck-scripts/tree/master/src/keepTweetedHashtags */
 (function () {
     'use strict';
 
