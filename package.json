@@ -19,7 +19,7 @@
     "@types/glob": "8.0.0",
     "@types/node": "16.11.68",
     "@types/twitter-text": "3.1.4",
-    "eslint": "8.26.0",
+    "eslint": "8.27.0",
     "glob": "8.0.3",
     "rimraf": "3.0.2",
     "rollup": "3.2.5",
