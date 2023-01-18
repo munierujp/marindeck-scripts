@@ -18,7 +18,7 @@
     "@tsconfig/node16": "1.0.3",
     "@types/glob": "8.0.0",
     "@types/node": "16.11.68",
-    "@types/twitter-text": "3.1.4",
+    "@types/twitter-text": "3.1.5",
     "eslint": "8.31.0",
     "glob": "8.0.3",
     "rimraf": "3.0.2",
