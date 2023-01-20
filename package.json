@@ -16,7 +16,7 @@
     "@munierujp/eslint-config-typescript": "4.0.0",
     "@rollup/plugin-typescript": "10.0.1",
     "@tsconfig/node16": "1.0.3",
-    "@types/glob": "8.0.0",
+    "@types/glob": "8.0.1",
     "@types/node": "16.11.68",
     "@types/twitter-text": "3.1.5",
     "eslint": "8.31.0",
