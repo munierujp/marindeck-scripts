@@ -10,7 +10,7 @@
     "prebuild": "npm run clean"
   },
   "engines": {
-    "node": "18.14.0"
+    "node": "18.11.0"
   },
   "devDependencies": {
     "@munierujp/eslint-config-typescript": "4.0.0",
