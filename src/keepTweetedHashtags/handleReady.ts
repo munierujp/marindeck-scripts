@@ -30,6 +30,7 @@ export const handleReady = (): void => {
       return
     }
 
+    // eslint-disable-next-line sonarjs/no-nested-template-literals
     textarea.value = ` ${hashtags.map((tag) => `#${tag}`).join(' ')}`
     textarea.selectionStart = 0
     textarea.selectionEnd = 0
