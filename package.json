@@ -22,7 +22,7 @@
     "@types/twitter-text": "3.1.5",
     "eslint": "8.40.0",
     "glob": "8.1.0",
-    "rimraf": "5.0.0",
+    "rimraf": "5.0.1",
     "rollup": "3.21.8",
     "typescript": "5.0.4"
   }
